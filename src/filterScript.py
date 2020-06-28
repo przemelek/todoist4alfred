@@ -7,9 +7,9 @@ import sys
 
 def filter(lines,marker,end,lookOnlyOnFront,projects):
 	  if query.count(marker)>0:
-	  	pos = query.rfind(marker)+1
+	  	pos = query.rfind(marker)+len(marker)
 		if lookOnlyOnFront:
-			pos = query.find(marker)+1
+			pos = query.find(marker)+len(marker)
 	  	project = query[pos:]
 	  	shown = False
 	  	for p in projects:
@@ -37,6 +37,8 @@ def retrieveObj(url):
           objs.append([name,id])
 	  return objs
 
+dues = [[x,1] for x in ["Tomorrow","Today","in"]]
+
 if not os.path.exists("token.dat"):
 	print("<items><item><title>Call todotoken yourToken</title></item></items>")
 	sys.exit()
@@ -62,6 +64,7 @@ else:
   filter(lines,"[",']',True,projects)
   filter(lines,"#","",True,projects)
   filter(lines,"@","",False,labels)
+  filter(lines,"{","",True,dues)
   s = set()
   for line in lines:
 	  if len(s.intersection([line]))==0:

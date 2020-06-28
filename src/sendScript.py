@@ -42,6 +42,13 @@ pos = 2**32
 
 qw = (query+" ").lower()
 
+due_string = None
+
+if query.count("{")==1:
+    pos = query.rfind("{")
+    due_string = query[pos+1:]
+    query = query[:pos]
+
 for project in projects:
     q = "#"+project[0].lower()+" "
     if qw.count(q)>0:
@@ -72,6 +79,8 @@ if projectId!=-1:
     msg["project_id"]=projectId
 if len(labelIds)>0:
     msg["label_ids"]=labelIds
+if due_string:
+    msg["due_string"]=due_string
 
 body=json.dumps(msg)
 
